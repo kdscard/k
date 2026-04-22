@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>カードゲーム説明書</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --bg-2: #fffdf8;
+      --surface: #ffffff;
+      --surface-soft: #fffaf0;
+      --text: #2f241f;
+      --muted: #76685f;
+      --line: #eadfd2;
+      --shadow: 0 10px 28px rgba(76, 47, 24, 0.08);
+      --red: #e94a3a;
+      --yellow: #f5bf23;
+      --green: #8dbf24;
+      --blue: #2f87d6;
+      --brown: #3c2219;
+      --orange: #f08a4b;
+      --radius: 28px;
+      --max: 1140px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(245,191,35,.12), transparent 22%),
+        radial-gradient(circle at top right, rgba(47,135,214,.10), transparent 20%),
+        linear-gradient(180deg, #fffdfa 0%, #f8f6f1 100%);
+      line-height: 1.75;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px 14px 90px;
+    }
+
+    .stack { display: grid; gap: 22px; }
+    section { scroll-margin-top: 24px; }
+
+    .hero-logo {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fffefb, #fff6ea);
+      border: 1px solid #efe3d6;
+      border-radius: 38px;
+      box-shadow: 0 14px 34px rgba(76,47,24,.08);
+      padding: 28px 24px 24px;
+      text-align: center;
+    }
+
+    .hero-logo::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 10px;
+      background: linear-gradient(90deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--green) 50% 75%, var(--blue) 75% 100%);
+    }
+
+    .hero-mark {
+      position: relative;
+      z-index: 1;
+      display: inline-grid;
+      gap: 6px;
+      justify-items: center;
+    }
+
+    .hero-kds {
+      font-weight: 1000;
+      font-size: clamp(3rem, 8vw, 5.4rem);
+      line-height: .9;
+      letter-spacing: -.08em;
+      display: flex;
+      align-items: flex-end;
+      gap: .04em;
+      transform: rotate(-2deg);
+    }
+
+    .hero-kds .k {
+      display: inline-block;
+      -webkit-text-stroke: 6px #2d1b14;
+      paint-order: stroke fill;
+      text-shadow: 4px 5px 0 rgba(60,34,25,.1);
+    }
+
+    .k-red { color: var(--red); }
+    .k-yellow { color: var(--yellow); }
+    .k-green { color: var(--green); }
+
+    .hero-sub {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      transform: rotate(-2deg);
+    }
+
+    .sub-chip {
+      font-weight: 1000;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 4px solid #2d1b14;
+      box-shadow: 0 6px 0 rgba(60,34,25,.08);
+      letter-spacing: .02em;
+    }
+
+    .sub-plain {
+      background: #fff;
+      color: #2d1b14;
+    }
+
+    .sub-orange { background: linear-gradient(135deg, #ffb37a, var(--orange)); }
+    .sub-blue { background: linear-gradient(135deg, #7cc4ff, var(--blue)); }
+
+    .sub-chip {
+      font-weight: 1000;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 4px solid #2d1b14;
+      box-shadow: 0 6px 0 rgba(60,34,25,.08);
+      letter-spacing: .02em;
+    }
+
+    .sub-orange { background: linear-gradient(135deg, #ffb37a, var(--orange)); }
+    .sub-blue { background: linear-gradient(135deg, #7cc4ff, var(--blue)); }
+
+    .hero-sub {
+      display: flex;
+      justify-content: center;
+      transform: rotate(-2deg);
+    }
+
+    .hero-sub-plain {
+      margin-top: 2px;
+      font-weight: 1000;
+      font-size: clamp(1.4rem, 3.4vw, 2.2rem);
+      color: #2d1b14;
+      letter-spacing: .06em;
+      line-height: 1.1;
+      text-shadow: 2px 3px 0 rgba(60,34,25,.08);
+    }
+
+    .hero-copy {
+      margin: 14px 0 0;
+      font-size: 1.02rem;
+      color: #7a5b47;
+      font-weight: 700;
+    }
+
+    .section-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,250,240,.98));
+      border: 1px solid #efe3d6;
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 34px 24px 24px;
+    }
+
+    .section-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 10px;
+      background: linear-gradient(90deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--green) 50% 75%, var(--blue) 75% 100%);
+    }
+
+    .section-card::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 26px;
+      border: 2px dashed rgba(240,138,75,.18);
+      pointer-events: none;
+    }
+
+    .section-head {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 6px;
+      margin-bottom: 20px;
+    }
+
+    .section-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 1.22rem;
+      font-weight: 900;
+      flex: 0 0 auto;
+      color: #2f241f;
+      border: 4px solid #fff;
+      box-shadow: 0 8px 20px rgba(80, 50, 28, 0.12);
+    }
+
+    .icon-blue { background: #9fd0ff; }
+    .icon-green { background: #cfe78b; }
+    .icon-amber { background: #ffd861; color: #5e3d00; }
+    .icon-red { background: #ffb5a2; }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      color: var(--brown);
+    }
+
+    .sub {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 16px;
+    }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .panel {
+      position: relative;
+      background: linear-gradient(180deg, #fff, #fffaf3);
+      border: 2px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 8px 20px rgba(76, 47, 24, 0.06);
+      padding: 22px;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      padding: 3px;
+      background: linear-gradient(135deg, rgba(233,74,58,.28), rgba(245,191,35,.22), rgba(141,191,36,.22), rgba(47,135,214,.24));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .mini-title {
+      margin: 0 0 10px;
+      font-size: 1.22rem;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      color: var(--brown);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: #2f241f;
+      font-size: .84rem;
+      font-weight: 900;
+      letter-spacing: .04em;
+      background: linear-gradient(135deg, var(--red), var(--orange));
+      box-shadow: 0 8px 18px rgba(233,74,58,.18);
+    }
+
+    .eyebrow.yellow { background: #ffd861; color: #5e3d00; }
+    .eyebrow.green { background: #cfe78b; }
+    .eyebrow.blue { background: #b8dcff; }
+    .eyebrow.red { background: #ffb9a8; }
+
+    .list { margin: 0; padding-left: 1.2rem; }
+    .list li { margin: 8px 0; }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .victory-summary {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      margin-bottom: 12px;
+    }
+
+    .victory-goal {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .victory-goal-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 18px 18px;
+      box-shadow: 0 10px 22px rgba(76,47,24,.08);
+      border: 2px solid #e6d9c8;
+      background: #fff;
+    }
+
+    .victory-study {
+      background: #f4faea;
+      border-left: 8px solid #7fb128;
+    }
+
+    .victory-skill {
+      background: #eef7ff;
+      border-left: 8px solid #2f87d6;
+    }
+
+    .victory-goal-label {
+      position: relative;
+      z-index: 1;
+      font-size: .95rem;
+      font-weight: 900;
+      letter-spacing: .02em;
+      color: #5f564e;
+      margin-bottom: 6px;
+    }
+
+    .victory-goal-value {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(2.2rem, 4vw, 3.1rem);
+      line-height: 1;
+      font-weight: 1000;
+      margin-bottom: 6px;
+      color: #2f241f;
+    }
+
+    .victory-goal-unit {
+      position: relative;
+      z-index: 1;
+      font-size: 1rem;
+      font-weight: 900;
+      color: #4d433c;
+    }
+
+    .victory-highlight {
+      border: 2px solid #f2e0bf;
+      background: linear-gradient(135deg, #fff9ea, #fff3d8);
+      color: #5c4330;
+      border-radius: 24px;
+      padding: 16px 18px;
+      font-weight: 800;
+      font-size: 1.04rem;
+      line-height: 1.6;
+      box-shadow: 0 8px 20px rgba(245,191,35,.1);
+    }
+
+    .victory-highlight strong {
+      color: #4a2f18;
+      font-size: 1.08em;
+    }
+
+    .pill {
+      padding: 10px 14px;
+      border: 2px solid #eadfce;
+      background: #fff;
+      border-radius: 999px;
+      font-size: .95rem;
+      color: #7a6657;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(76,47,24,.04);
+    }
+
+    .setup-steps,
+    .turn-steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 18px;
+      border-radius: 24px;
+      border: 2px solid var(--line);
+      background: linear-gradient(180deg, #fff, #fffaf4);
+    }
+
+    .step-num {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ffd861, var(--yellow));
+      color: #5e3d00;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 1.06rem;
+      border: 4px solid #fff;
+      box-shadow: 0 8px 18px rgba(245,191,35,.18);
+    }
+
+    .phase-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 20px;
+    }
+
+    .phase {
+      overflow: hidden;
+      border: 2px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(180deg, #fff, #fffaf2);
+      box-shadow: 0 10px 24px rgba(76,47,24,.06);
+    }
+
+    .phase-header {
+      position: relative;
+      padding: 20px 22px;
+      font-size: 1.24rem;
+      font-weight: 1000;
+      letter-spacing: .04em;
+      color: #2f241f;
+    }
+
+    .phase-header::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 92px;
+      height: 100%;
+      background: rgba(255,255,255,.2);
+      clip-path: polygon(26% 0, 100% 0, 74% 100%, 0 100%);
+    }
+
+    .phase-body { padding: 18px; }
+
+    .phase-start .phase-header { background: #cfe78b; }
+    .phase-main .phase-header { background: #ffb9a8; }
+    .phase-end .phase-header { background: #b8dcff; }
+
+    .choice-banner {
+      margin: 18px 0 14px;
+      padding: 20px 20px;
+      border-radius: 24px;
+      border: 3px solid #f3d79d;
+      background: #fff6df;
+      box-shadow: 0 8px 20px rgba(245,191,35,.12);
+      color: #5f4c3d;
+    }
+
+    .choice-title {
+      font-size: 1.14rem;
+      font-weight: 1000;
+      color: #6a4300;
+      margin-bottom: 6px;
+    }
+
+    .choice-sub {
+      color: #6e5949;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .action {
+      position: relative;
+      overflow: hidden;
+      padding: 20px 18px 18px;
+      border-radius: 26px;
+      border: 2px solid #e3d9cd;
+      min-height: 168px;
+      color: #2f241f;
+      box-shadow: 0 10px 22px rgba(76,47,24,.08);
+      background: #fff;
+    }
+
+    .action::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: -24px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.16);
+    }
+
+    .action-skill {
+      background: #eef7ff;
+      border-left: 8px solid #2f87d6;
+    }
+    .action-study {
+      background: #f4faea;
+      border-left: 8px solid #7fb128;
+    }
+    .action-battle {
+      background: #fff0ec;
+      border-left: 8px solid #e94a3a;
+    }
+    .action-wait {
+      background: #fff6ea;
+      border-left: 8px solid #f08a4b;
+    }
+
+    .action-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      min-width: 110px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 1000;
+      letter-spacing: .06em;
+      color: #3c2219;
+      background: #fff;
+      border: 2px solid #d9cfc2;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 4px 10px rgba(0,0,0,.06);
+    }
+
+    .action strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.28rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .action p {
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      color: #4e433c;
+      opacity: 1;
+      font-weight: 700;
+      line-height: 1.3;
+      font-size: .86rem;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 22px;
+      border: 2px solid #f1d9d3;
+      background: #fff3ee;
+      color: #7d4a3d;
+      font-weight: 700;
+    }
+
+    .media-card {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .media-frame {
+      background: linear-gradient(180deg, #fff, #fffaf3);
+      border: 2px solid var(--line);
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 8px 18px rgba(76,47,24,.06);
+      text-align: center;
+    }
+
+    .media-frame img {
+      border-radius: 18px;
+      width: auto;
+      max-width: 100%;
+      max-height: 460px;
+      height: auto;
+      object-fit: contain;
+      background: #fff;
+      margin: 0 auto;
+    }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .legend {
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      padding: 14px;
+      background: linear-gradient(180deg, #fff, #fffaf4);
+    }
+
+    .legend-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: inline-grid;
+      place-items: center;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffd861, var(--yellow));
+      color: #5e3d00;
+      font-weight: 900;
+      border: 3px solid #fff;
+      box-shadow: 0 8px 18px rgba(245,191,35,.16);
+    }
+
+    details {
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fff, #fffaf4);
+      box-shadow: 0 8px 18px rgba(76,47,24,.05);
+      padding: 14px 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    details + details { margin-top: 12px; }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      font-weight: 800;
+      padding-right: 28px;
+      position: relative;
+      color: var(--brown);
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: "+";
+      position: absolute;
+      right: 0;
+      top: -2px;
+      color: var(--muted);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+    details[open] summary::after { content: "−"; }
+
+    .qa-answer {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px dashed #eadfd3;
+      color: #5b4b42;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .93rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 960px) {
+      .grid.two,
+      .grid.four,
+      .action-grid,
+      .legend-grid,
+      .media-card,
+      .victory-goal {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap { padding: 14px 10px 72px; }
+
+      .hero-logo {
+        padding: 20px 14px 16px;
+        border-radius: 24px;
+        box-shadow: 0 8px 18px rgba(76,47,24,.06);
+      }
+
+      .hero-kds {
+        font-size: 4rem;
+      }
+
+      .hero-kds .k {
+        -webkit-text-stroke: 4px #2d1b14;
+      }
+
+      .hero-copy {
+        font-size: .96rem;
+      }
+
+      .section-card {
+        padding: 22px 14px 14px;
+        border-radius: 22px;
+        box-shadow: 0 6px 16px rgba(76,47,24,.05);
+      }
+
+      .section-card::after {
+        display: none;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        margin-top: 2px;
+        margin-bottom: 16px;
+        gap: 14px;
+      }
+
+      .section-head > div:last-child {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      h2 {
+        display: inline-block;
+        position: relative;
+        font-size: 1.82rem;
+        line-height: 1.08;
+        letter-spacing: -.03em;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        border: none;
+      }
+
+      
+
+      .sub {
+        font-size: .98rem;
+        padding-left: 0;
+        color: #7b6d63;
+      }
+
+      .panel,
+      .phase,
+      .legend,
+      .action,
+      .step,
+      details,
+      .media-frame,
+      .victory-goal-item,
+      .victory-highlight,
+      .choice-banner,
+      .notice {
+        border-radius: 18px;
+        box-shadow: none;
+      }
+
+      .panel,
+      .legend,
+      .action,
+      details,
+      .media-frame,
+      .victory-goal-item {
+        border-width: 1px;
+      }
+
+      .panel::before,
+      .action::after {
+        display: none;
+      }
+
+      .eyebrow {
+        box-shadow: none;
+        color: #3a241a;
+        border: 1px solid rgba(60,34,25,.08);
+      }
+
+      .eyebrow.red { background: #f6b1a3; }
+      .eyebrow.blue { background: #a9d2fb; }
+      .eyebrow.green { background: #d4e997; }
+      .eyebrow.yellow { background: #f6dc7a; color: #5a3b07; }
+
+      .phase-list {
+        gap: 14px;
+      }
+
+      .phase {
+        overflow: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      .phase-header {
+        color: #3a241a;
+        border-radius: 16px 16px 0 0;
+        border: 1px solid #eadfd2;
+        border-bottom: none;
+        padding: 15px 16px 13px;
+        font-size: 1.08rem;
+      }
+
+      .phase-header::after {
+        display: none;
+      }
+
+      .phase-start .phase-header { background: #d9eca2; }
+      .phase-main .phase-header { background: #ffc3b5; }
+      .phase-end .phase-header { background: #bddcff; }
+
+      .phase-body {
+        padding: 4px 0 0;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+      }
+
+      .turn-steps,
+      .setup-steps {
+        gap: 0;
+      }
+
+      .step {
+        padding: 16px 0;
+        grid-template-columns: 40px 1fr;
+        gap: 24px;
+        align-items: start;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .step + .step {
+        border-top: 1px solid #e9dfd2;
+      }
+
+      .step-num {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        border: 2px solid #f2d36b;
+        outline: none;
+        background: #fffdf7;
+        color: #5a411c;
+        box-shadow: none;
+        font-size: .96rem;
+        font-weight: 900;
+        line-height: 1;
+        display: grid;
+        place-items: center;
+        margin-left: 10px;
+        flex: 0 0 auto;
+      }
+
+      .step > div:last-child {
+        padding-right: 12px;
+        font-size: 1.04rem;
+        line-height: 1.72;
+        font-weight: 600;
+        color: #3f2a20;
+      }
+
+      .step > div:last-child strong {
+        font-weight: 900;
+        color: #2f1d16;
+      }
+
+      .choice-banner {
+        padding: 14px;
+        border-width: 2px;
+        background: #fff4d8;
+        color: #5a4839;
+      }
+
+      .choice-title { font-size: 1rem; color: #68420c; }
+      .choice-sub { font-size: .95rem; color: #6a5848; }
+
+      .action {
+        min-height: unset;
+        padding: 16px 14px 14px;
+        border-left-width: 6px;
+      }
+
+      .action-label {
+        min-width: 92px;
+        font-size: .74rem;
+        padding: 5px 9px;
+        margin-bottom: 10px;
+      }
+
+      .action strong {
+        font-size: 1.12rem;
+        margin-bottom: 6px;
+      }
+
+      .action p {
+        font-size: .84rem;
+        line-height: 1.35;
+      }
+
+      .victory-study {
+        background: #eef6e2;
+        border-left-color: #8ab63b;
+      }
+
+      .victory-skill {
+        background: #e8f2fb;
+        border-left-color: #4f97de;
+      }
+
+      .victory-goal-label,
+      .victory-goal-unit,
+      .victory-goal-value {
+        color: #3a241a;
+      }
+
+      .victory-goal-value { font-size: 2.6rem; }
+
+      .victory-highlight {
+        font-size: .98rem;
+        line-height: 1.5;
+        background: #fff1cf;
+        border-color: #ecd8a7;
+        color: #5a4632;
+      }
+
+      .notice {
+        background: #fff1eb;
+        color: #72483d;
+      }
+
+      .media-frame img {
+        width: auto;
+        max-width: 100%;
+        max-height: 240px;
+        height: auto;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap stack">
+    <section class="hero-logo">
+      <div class="hero-mark">
+        <div class="hero-kds">
+          <span class="k k-red">K</span><span class="k k-yellow">D</span><span class="k k-green">S</span>
+        </div>
+        <div class="hero-sub hero-sub-plain">カードゲーム</div>
+      </div>
+      <p class="hero-copy">運転が楽しくなる!! をイメージした、ポップで見やすいKDSカードゲーム説明書</p>
+    </section>
+    <section id="overview" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-blue">1</div>
+        <div>
+          <h2>ゲーム概要</h2>
+          <p class="sub">最初に見る場所です。勝ち方とデッキの作り方をここで確認できます。</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="panel soft">
+          <div class="eyebrow red">勝利条件</div>
+          <h3 class="mini-title">先に卒業条件をそろえたプレイヤーの勝ち</h3>
+          <div class="victory-summary">
+            <div class="victory-goal">
+              <div class="victory-goal-item victory-study">
+                <div class="victory-goal-label">学科教習</div>
+                <div class="victory-goal-value">10</div>
+                <div class="victory-goal-unit">時限</div>
+              </div>
+              <div class="victory-goal-item victory-skill">
+                <div class="victory-goal-label">技能教習</div>
+                <div class="victory-goal-value">19</div>
+                <div class="victory-goal-unit">時限</div>
+              </div>
+            </div>
+            <div class="victory-highlight">
+              <strong>学科教習10時限</strong> と <strong>技能教習19時限</strong> を先に達成したプレイヤーが勝ちです。
+            </div>
+          </div>
+        </article>
+        <article class="panel soft">
+          <div class="eyebrow blue">デッキ構築</div>
+          <h3 class="mini-title">対戦前にここだけ確認</h3>
+          <ul class="list">
+            <li>デッキは <strong>20枚以上</strong> のカードから遊べます。</li>
+            <li><strong>同名カード</strong> はデッキに入れられません。</li>
+            <li><strong>サポートカード</strong> は <strong>5枚以下</strong> までです。</li>
+            <li><strong>担当カード</strong> は <strong>1枚のみ</strong> です。なお、この担当カードはデッキ枚数に含まれません。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="prepare" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-amber">2</div>
+        <div>
+          <h2>準備するもの</h2>
+          <p class="sub">遊ぶ前にそろえるものと、対戦開始前の流れです。</p>
+        </div>
+      </div>
+      <div class="grid four">
+        <article class="panel"><h3 class="mini-title">デッキ</h3><p>自分が使用するカードの束です。対戦前によくシャッフルします。</p></article>
+        <article class="panel"><h3 class="mini-title">担当カード 1枚</h3><p>それぞれ独自の効果を持った担当カードを1枚用意します。</p></article>
+        <article class="panel"><h3 class="mini-title">教習を進める駒</h3><p>技能時間や学科時間の進行状況を示すための駒です。あると遊びやすくなります。</p></article>
+        <article class="panel"><h3 class="mini-title">プレイマット</h3><p>プレイマットがあると位置関係を把握しやすくなります。<strong>教習原簿をプレイマットとして使用することもできます。</strong></p></article>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <div class="panel soft">
+        <div class="eyebrow green">対戦準備</div>
+        <div class="setup-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div><strong>お互いにデッキをシャッフル</strong> します。</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div><strong>じゃんけん</strong> をして、先攻・後攻を決めます。</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>お互いに山札の上から <strong>5枚引き</strong>、それを手札にします。</div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div><strong>ここで1回まで手札を入れ替えできます。</strong> 手札をすべて山札に戻してシャッフルし、あらためて5枚引きます。</div>
+          </div>
+        </div>
+        <div class="notice">準備が終わったら対戦開始です。</div>
+      </div>
+    </section>
+
+    <section id="flow" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-green">3</div>
+        <div>
+          <h2>ゲームの流れ</h2>
+          <p class="sub">1ターンの流れは「スタート → メイン → ターン終了」です。</p>
+        </div>
+      </div>
+
+      <div class="phase-list">
+        <article class="phase phase-start">
+          <div class="phase-header">スタートフェイズ</div>
+          <div class="phase-body">
+            <div class="turn-steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div>休憩（横向き）のインストラクターがいる場合は、<strong>元気（縦向き）</strong> にします。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div>山札の上から <strong>1枚引き</strong>、手札に加えます。</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="phase phase-main">
+          <div class="phase-header">メインフェイズ</div>
+          <div class="phase-body">
+            <div class="choice-banner">
+              <div class="choice-title">最重要：インストラクターを出せるのはメインフェイズの最初だけ</div>
+              <div class="choice-sub">まず最初に、手札からインストラクターを1枚出すか、そのまま出さずに進めるかを選びます。<strong>行動を始めたあとで、途中から追加でインストラクターを出すことはできません。</strong></div>
+            </div>
+
+            <div class="turn-steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div><strong>メインフェイズの最初にだけ、手札からインストラクターを1枚出す / 出さない</strong> を選びます。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div>その後、<strong>場にいるインストラクター達が、それぞれ下の4つの行動のどれか1つ</strong> を行います。</div>
+              </div>
+            </div>
+
+            <div class="choice-banner">
+              <div class="choice-title">ここが重要：インストラクター1人につき、この4つの行動からどれか1つを選びます</div>
+              <div class="choice-sub">1人のインストラクターが同じターンに複数の行動をするのではなく、毎回この中から1つだけ選んで実行します。</div>
+            </div>
+
+            <div class="action-grid">
+              <div class="action action-skill">
+                <span class="action-label">CHOICE 01</span>
+                <strong>技能を進める</strong>
+                <p>教習力分だけ技能の教習を進めます。</p>
+              </div>
+              <div class="action action-study">
+                <span class="action-label">CHOICE 02</span>
+                <strong>学科を進める</strong>
+                <p>教習力分だけ学科の教習を進めます。</p>
+              </div>
+              <div class="action action-battle">
+                <span class="action-label">CHOICE 03</span>
+                <strong>バトルをする</strong>
+                <p>戦闘力の数字を使い、相手にバトルを仕掛けます。</p>
+              </div>
+              <div class="action action-wait">
+                <span class="action-label">CHOICE 04</span>
+                <strong>なにもしない</strong>
+                <p>なにもしません。代わりに休憩（横向き）状態になりません。</p>
+              </div>
+            </div>
+
+            <div class="notice">
+              <strong>技能・学科・バトルをしたインストラクターは休憩状態（横向き）になります。</strong><br>
+              何もしなかったインストラクターは元気状態のままです。
+            </div>
+          </div>
+        </article>
+
+        <article class="phase phase-end">
+          <div class="phase-header">ターン終了</div>
+          <div class="phase-body">
+            <div class="turn-steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div>やりたいことをやり終えたら、<strong>「ターン終了」</strong> と相手に宣言します。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div>宣言後、相手のターンに移ります。</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="battle-flow" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-red">4</div>
+        <div>
+          <h2>バトルの流れ</h2>
+          <p class="sub">バトルを選んだときは、この順番で処理します。</p>
+        </div>
+      </div>
+
+      <div class="phase-list">
+        <article class="phase phase-main">
+          <div class="phase-header">STEP 1 バトルを仕掛ける</div>
+          <div class="phase-body">
+            <div class="turn-steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div>元気状態のインストラクターを使って、相手の<strong>休憩状態（横向き）のインストラクター</strong>にバトルを仕掛けます。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div>バトルを仕掛けた側のインストラクターは、<strong>休憩状態（横向き）</strong>になります。</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="phase phase-start">
+          <div class="phase-header">STEP 2 サポートフェイズ</div>
+          <div class="phase-body">
+            <div class="turn-steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div><strong>仕掛けられた側から交互に</strong>、サポートカードをプレイします。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div>サポートカードは<strong>何枚でもプレイ可能</strong>です。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div>どちらのプレイヤーもサポートカードを使い終わったら、サポートフェイズは終了します。</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="phase phase-end">
+          <div class="phase-header">STEP 3 バトル</div>
+          <div class="phase-body">
+            <div class="turn-steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div>お互いの<strong>戦闘力</strong>を比べます。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div>戦闘力が<strong>低いインストラクターが退場</strong>します。</div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div>戦闘力の値が<strong>同じ場合は、どちらも退場</strong>します。</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="card" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-blue">5</div>
+        <div>
+          <h2>カードの見方</h2>
+          <p class="sub">カード画像を見ながら、どこに何が書いてあるかを確認できます。</p>
+        </div>
+      </div>
+      <div class="media-card">
+        <div class="media-frame">
+          <img src="カード画像.png" alt="カードの見方の画像" />
+        </div>
+        <div class="grid" style="gap:12px;">
+          <article class="legend">
+            <div class="legend-num">1</div>
+            <h3 class="mini-title">インストラクターの名前</h3>
+            <p>カード上部に書かれている名前です。</p>
+          </article>
+          <article class="legend">
+            <div class="legend-num">2</div>
+            <h3 class="mini-title">カード本文</h3>
+            <p>手札から場に出した時、最初に見る場所です。使用タイミングにはいくつか種類があります。</p>
+            <ul class="list">
+              <li><strong>（登場時）</strong> … 手札から場に出した時に発動します。</li>
+              <li><strong>（アタック）</strong> … アタック時に関係する効果です。</li>
+              <li><strong>（自分のターン終了時）</strong> … 自分から相手にバトルを仕掛ける時に発動します。</li>
+              <li><strong>（相手のアタック時）</strong> … 相手が自分に対してバトルを仕掛けてきた時のみ発動します。</li>
+              <li><strong>（相手の教習時）</strong> … 相手が教習をしている時のみ発動します。</li>
+              <li><strong>（バトル時）</strong> … お互いのバトル中のみ発動します。</li>
+            </ul>
+          </article>
+          <article class="legend">
+            <div class="legend-num">3</div>
+            <h3 class="mini-title">戦闘力 / 教習力</h3>
+            <p>教習力は、技能または学科をその数字分だけ進めます。戦闘力は、相手より数字が高ければバトルで有利になります。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="mat" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-green">6</div>
+        <div>
+          <h2>プレイマットの見方</h2>
+          <p class="sub">各エリアの役割を、番号つき画像と対応させて確認できます。</p>
+        </div>
+      </div>
+      <div class="media-card">
+        <div class="media-frame">
+          <img src="プレイマット画像.png" alt="プレイマットの見方の画像" />
+        </div>
+        <div class="legend-grid">
+          <article class="legend"><div class="legend-num">1</div><h3 class="mini-title">山札置き場</h3><p>自分が使用するデッキを置く場所です。ここに置いたものを「山札」と呼びます。</p></article>
+          <article class="legend"><div class="legend-num">2</div><h3 class="mini-title">担当カード置き場</h3><p>担当カードを別置きする場合はこちらに置きます。担当カードをデッキに含める場合は使いません。</p></article>
+          <article class="legend"><div class="legend-num">3</div><h3 class="mini-title">教習エリア</h3><p>自分の「場」です。使用するインストラクターをここに置きます。</p></article>
+          <article class="legend"><div class="legend-num">4</div><h3 class="mini-title">学科時間</h3><p>学科を進めるとき、駒を数字に沿って進めます。</p></article>
+          <article class="legend"><div class="legend-num">5</div><h3 class="mini-title">技能科時間</h3><p>技能を進めるとき、駒を数字に沿って進めます。</p></article>
+          <article class="legend"><div class="legend-num">6</div><h3 class="mini-title">場外</h3><p>バトルで敗れたインストラクターや、使用したサポートカードを置く場所です。</p></article>
+        </div>
+      </div>
+      <div class="notice">このプレイマットは普通車の教習原簿でも使用できます。その場合は3ページ目を使用してください。</div>
+    </section>
+
+    <section id="qa" class="section-card">
+      <div class="section-head">
+        <div class="section-icon icon-red">7</div>
+        <div>
+          <h2>Q&amp;A</h2>
+          <p class="sub">ルールで迷いやすいポイントを最後にまとめています。</p>
+        </div>
+      </div>
+
+      <details>
+        <summary>場に出したインストラクターはすぐ使えますか？</summary>
+        <p class="qa-answer">はい。場に出したターンに、そのまますぐに教習またはバトルを行えます。</p>
+      </details>
+
+      <details>
+        <summary>相手の元気（縦向き）状態のインストラクターにバトルを仕掛けることはできますか？</summary>
+        <p class="qa-answer">バトルの対象にできるのは、<strong>休憩（横向き）状態</strong> のインストラクターのみです。元気状態のインストラクターにはバトルを仕掛けられません。</p>
+      </details>
+
+      <details>
+        <summary>自分のインストラクターより戦闘力の高いインストラクターにバトルを仕掛けることはできますか？</summary>
+        <p class="qa-answer">可能です。サポートカードで逆転を狙いましょう。</p>
+      </details>
+
+      <details>
+        <summary>自分のターン中、手札からインストラクターは何枚でも出せますか？</summary>
+        <p class="qa-answer">出せません。<strong>1ターンに1枚まで</strong> です。</p>
+      </details>
+
+      <details>
+        <summary>担当カードは教習やバトルができますか？</summary>
+        <p class="qa-answer">できません。</p>
+      </details>
+
+      <details>
+        <summary>教習力4のインストラクターで、技能に3・学科に1のように教習力を振り分けられますか？</summary>
+        <p class="qa-answer">できません。教習力は振り分けられないため、<strong>技能か学科のどちらか一方</strong> を選びます。</p>
+      </details>
+
+      <details>
+        <summary>残りの学科教習時限が1の時、教習力4のインストラクターで学科教習を行うとどうなりますか？</summary>
+        <p class="qa-answer">1のみ学科の教習時限が進みます。残りの教習時限以上の数字は切り捨てになります。</p>
+      </details>
+
+      <details>
+        <summary>山札がなくなった場合はどうなりますか？</summary>
+        <p class="qa-answer">自分のターン開始時に山札を引けなかった場合、そのプレイヤーの<strong>負け</strong> になります。</p>
+      </details>
+
+      <details>
+        <summary>サポートカードは何枚でも使えますか？</summary>
+        <p class="qa-answer">ありません。<strong>複数枚使用可能</strong> です。</p>
+      </details>
+
+      <details>
+        <summary>サポートカードはバトルの時以外でも使えますか？</summary>
+        <p class="qa-answer">はい。適切なタイミングであれば使用することができるカードもあります。</p>
+      </details>
+
+      <details>
+        <summary>受付のサポートカードは、防御にも使えますか？</summary>
+        <p class="qa-answer">使えます。相手にアタックされる時などに使って、一時的に戦闘力を上げ、場外行きを回避する使い方もできます。</p>
+      </details>
+
+      <details>
+        <summary>相手が学科か技能、片方の教習を進め終えた後で、相手の教習時限をマイナスするカードを使うことはできますか？</summary>
+        <p class="qa-answer">できます。</p>
+      </details>
+    </section>
+</main>
+</body>
+</html>
