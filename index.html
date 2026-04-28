@@ -44,9 +44,12 @@
     img { max-width: 100%; display: block; }
 
     .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px 14px 90px;
+      /* Allow the layout to stretch the full browser width */
+      max-width: none;
+      width: 100%;
+      margin: 0;
+      /* Remove horizontal padding so sections can use the full width. Retain top/bottom padding. */
+      padding: 24px 0 90px;
     }
 
     .stack { display: grid; gap: 22px; }
@@ -54,12 +57,13 @@
 
     .hero-logo {
       position: relative;
-      overflow: hidden;
-      background: linear-gradient(180deg, #fffefb, #fff6ea);
-      border: 1px solid #efe3d6;
-      border-radius: 38px;
-      box-shadow: 0 14px 34px rgba(76,47,24,.08);
-      padding: 28px 24px 24px;
+      overflow: visible;
+      /* Remove card styling so the hero spans the full width */
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 28px 0 24px;
       text-align: center;
     }
 
@@ -168,13 +172,15 @@
     }
 
     .section-card {
+      /* Give each section room without constraining it to a card. */
       position: relative;
-      overflow: hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,250,240,.98));
-      border: 1px solid #efe3d6;
-      border-radius: 34px;
-      box-shadow: var(--shadow);
-      padding: 34px 24px 24px;
+      overflow: visible;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      /* Remove horizontal padding so content spans the full width */
+      padding: 34px 0 24px;
     }
 
     .section-card::before {
@@ -188,12 +194,8 @@
     }
 
     .section-card::after {
-      content: "";
-      position: absolute;
-      inset: 12px;
-      border-radius: 26px;
-      border: 2px dashed rgba(240,138,75,.18);
-      pointer-events: none;
+      /* Hide the dashed border that framed the card */
+      display: none;
     }
 
     .section-head {
@@ -309,82 +311,382 @@
       margin-top: 16px;
     }
 
-    .victory-summary {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-      margin-bottom: 12px;
-    }
+.victory-summary {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
 
-    .victory-goal {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
+.victory-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 18px 0 12px;
+  border-radius: 999px;
+  background: #f48f7d;
+  color: #fff;
+  font-size: .96rem;
+  font-weight: 900;
+  letter-spacing: .02em;
+  box-shadow: none;
+  border: none;
+}
 
-    .victory-goal-item {
+.victory-chip-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.victory-chip-icon svg {
+  width: 19px;
+  height: 19px;
+  display: block;
+  fill: currentColor;
+}
+
+.victory-headline {
+  margin: 0;
+  font-size: clamp(1.55rem, 3.1vw, 2.25rem);
+  line-height: 1.36;
+  letter-spacing: -.03em;
+  color: var(--brown);
+  font-weight: 1000;
+}
+
+.victory-goal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.victory-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 154px;
+  padding: 24px 26px;
+  border-radius: 26px;
+  border: 2px solid #e7dbc7;
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.victory-study {
+  background: #f3f9e8;
+  border-color: #9ac95d;
+}
+
+.victory-skill {
+  background: #edf5ff;
+  border-color: #7eb5ec;
+}
+
+.victory-goal-icon-wrap {
+  width: 86px;
+  height: 86px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.9);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.victory-goal-icon-wrap svg {
+  width: 42px;
+  height: 42px;
+  display: block;
+}
+
+.victory-study .victory-goal-icon-wrap svg {
+  fill: #63a528;
+  stroke: none;
+}
+
+.victory-skill .victory-goal-icon-wrap svg {
+  fill: none;
+  stroke: #2f87d6;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.victory-goal-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.victory-goal-label {
+  font-size: 1.08rem;
+  font-weight: 900;
+  letter-spacing: .02em;
+  color: #4f463e;
+  margin: 0;
+}
+
+.victory-goal-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.victory-goal-value {
+  margin: 0;
+  font-size: clamp(3.8rem, 7vw, 5rem);
+  line-height: .95;
+  font-weight: 1000;
+  letter-spacing: -.05em;
+}
+
+.victory-study .victory-goal-value,
+.victory-study .victory-goal-unit {
+  color: #5f9d28;
+}
+
+.victory-skill .victory-goal-value,
+.victory-skill .victory-goal-unit {
+  color: #2f87d6;
+}
+
+.victory-goal-unit {
+  font-size: 1.75rem;
+  line-height: 1;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.victory-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 6px 6px 2px;
+  color: #3b2a22;
+}
+
+.victory-result-burst {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.victory-result-burst::before,
+.victory-result-burst::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 4px;
+  border-radius: 999px;
+  background: #f48f7d;
+  transform-origin: center;
+}
+
+.victory-result-burst::before {
+  transform: translate(-50%, -50%) rotate(55deg);
+}
+
+.victory-result-burst::after {
+  transform: translate(-50%, -50%) rotate(-55deg);
+}
+
+.victory-flag {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+
+.victory-flag svg {
+  width: 32px;
+  height: 32px;
+  display: block;
+  fill: #f48f7d;
+}
+
+.victory-result-text {
+  font-size: clamp(1.2rem, 2.6vw, 1.75rem);
+  line-height: 1.4;
+  font-weight: 1000;
+  letter-spacing: -.02em;
+  color: var(--brown);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .victory-goal {
+    grid-template-columns: 1fr;
+  }
+
+  .victory-goal-item {
+    min-height: 138px;
+  }
+}
+
+@media (max-width: 640px) {
+  .victory-summary {
+    gap: 16px;
+  }
+
+  .victory-chip {
+    min-height: 48px;
+    padding: 0 16px 0 10px;
+    font-size: .92rem;
+  }
+
+  .victory-chip-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .victory-chip-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .victory-headline {
+    font-size: 1.25rem;
+    line-height: 1.44;
+  }
+
+  .victory-goal {
+    gap: 14px;
+  }
+
+  .victory-goal-item {
+    gap: 14px;
+    min-height: 118px;
+    padding: 18px 18px;
+    border-radius: 22px;
+  }
+
+  .victory-goal-icon-wrap {
+    width: 64px;
+    height: 64px;
+  }
+
+  .victory-goal-icon-wrap svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .victory-goal-label {
+    font-size: .95rem;
+  }
+
+  .victory-goal-row {
+    gap: 10px;
+  }
+
+  .victory-goal-value {
+    font-size: 3.6rem;
+  }
+
+  .victory-goal-unit {
+    font-size: 1.1rem;
+  }
+
+  .victory-result {
+    gap: 10px;
+    padding-top: 0;
+  }
+
+  .victory-result-burst {
+    width: 18px;
+    height: 18px;
+  }
+
+  .victory-result-burst::before,
+  .victory-result-burst::after {
+    width: 12px;
+    height: 3px;
+  }
+
+  .victory-flag {
+    width: 28px;
+    height: 28px;
+  }
+
+  .victory-flag svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .victory-result-text {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+
+
+    /* 追加：右端まで色が伸びる、アイコン付きの横長見出し */
+    .rule-strip {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+      height: 54px;
+      min-height: 54px;
+      margin: 0 0 18px;
+      padding: 0 18px 0 12px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: .96rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: .02em;
+      box-shadow: none;
+      border: none;
       position: relative;
       overflow: hidden;
-      border-radius: 24px;
-      padding: 18px 18px;
-      box-shadow: 0 10px 22px rgba(76,47,24,.08);
-      border: 2px solid #e6d9c8;
-      background: #fff;
+      box-sizing: border-box;
     }
 
-    .victory-study {
-      background: #f4faea;
-      border-left: 8px solid #7fb128;
+    .rule-strip::after {
+      display: none;
     }
 
-    .victory-skill {
-      background: #eef7ff;
-      border-left: 8px solid #2f87d6;
+    .rule-strip-blue { background: #4f97de; }
+    .rule-strip-green { background: #8dbf24; }
+
+    .rule-strip-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
     }
 
-    .victory-goal-label {
+    .rule-strip-icon svg {
+      width: 19px;
+      height: 19px;
+      display: block;
+      fill: currentColor;
+      stroke: currentColor;
+      stroke-width: 0;
+    }
+
+    .rule-strip-text {
       position: relative;
       z-index: 1;
-      font-size: .95rem;
-      font-weight: 900;
-      letter-spacing: .02em;
-      color: #5f564e;
-      margin-bottom: 6px;
-    }
-
-    .victory-goal-value {
-      position: relative;
-      z-index: 1;
-      font-size: clamp(2.2rem, 4vw, 3.1rem);
       line-height: 1;
-      font-weight: 1000;
-      margin-bottom: 6px;
-      color: #2f241f;
-    }
-
-    .victory-goal-unit {
-      position: relative;
-      z-index: 1;
-      font-size: 1rem;
-      font-weight: 900;
-      color: #4d433c;
-    }
-
-    .victory-highlight {
-      border: 2px solid #f2e0bf;
-      background: linear-gradient(135deg, #fff9ea, #fff3d8);
-      color: #5c4330;
-      border-radius: 24px;
-      padding: 16px 18px;
-      font-weight: 800;
-      font-size: 1.04rem;
-      line-height: 1.6;
-      box-shadow: 0 8px 20px rgba(245,191,35,.1);
-    }
-
-    .victory-highlight strong {
-      color: #4a2f18;
-      font-size: 1.08em;
+      display: inline-flex;
+      align-items: center;
     }
 
     .pill {
@@ -693,12 +995,18 @@
     }
 
     @media (max-width: 960px) {
+      #overview { --section-accent: #ef6b5b; }
+      #prepare { --section-accent: #f0bd1b; }
+      #flow { --section-accent: #8dbf24; }
+      #battle-flow { --section-accent: #ef8d7d; }
+      #card { --section-accent: #4f97de; }
+      #mat { --section-accent: #86b94a; }
+      #qa { --section-accent: #ef8d7d; }
+
       .grid.two,
-      .grid.four,
-      .action-grid,
       .legend-grid,
       .media-card,
-      .victory-goal {
+      .action-grid {
         grid-template-columns: 1fr;
       }
 
@@ -710,32 +1018,23 @@
         box-shadow: 0 8px 18px rgba(76,47,24,.06);
       }
 
-      .hero-kds {
-        font-size: 4rem;
-      }
-
-      .hero-kds .k {
-        -webkit-text-stroke: 4px #2d1b14;
-      }
-
-      .hero-copy {
-        font-size: .96rem;
-      }
+      .hero-kds { font-size: 4rem; }
+      .hero-kds .k { -webkit-text-stroke: 4px #2d1b14; }
+      .hero-copy { font-size: .96rem; }
 
       .section-card {
-        padding: 22px 14px 14px;
-        border-radius: 22px;
-        box-shadow: 0 6px 16px rgba(76,47,24,.05);
+        /* Remove rounded corners and shadows on small screens */
+        padding: 20px 0 16px;
+        border-radius: 0;
+        box-shadow: none;
       }
 
-      .section-card::after {
-        display: none;
-      }
+      .section-card::after { display: none; }
 
       .section-head {
         align-items: flex-start;
         margin-top: 2px;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
         gap: 14px;
       }
 
@@ -743,72 +1042,54 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
+        gap: 8px;
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .section-head > div:last-child::after {
+        content: "";
+        display: block;
+        width: 100%;
+        margin-top: 4px;
+        border-top: 4px dotted var(--section-accent, #d7cec3);
       }
 
       .section-icon {
-        width: 36px;
-        height: 36px;
+        width: 42px;
+        height: 42px;
         border-radius: 999px;
-        border: 1px solid #ddd4c8;
-        background: #fffdf8;
-        box-shadow: none;
-        outline: none;
-        font-size: .9rem;
-        font-weight: 900;
-        color: #2f241f;
-      }
-
-      .icon-blue,
-      .icon-green,
-      .icon-red,
-      .icon-amber {
-        background: #fffdf8;
-        border-color: #ddd4c8;
-        color: #2f241f;
-      }
-
-      .section-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 999px;
-        border: 1px solid #ddd4c8;
+        border: none;
         outline: none;
         box-shadow: none;
-        font-size: .9rem;
+        font-size: 1.05rem;
         font-weight: 900;
-        color: #2f241f;
+        color: #fff;
         display: grid;
         place-items: center;
-        background: #fffdf8;
+        flex: 0 0 auto;
       }
 
-      .icon-blue,
-      .icon-green,
-      .icon-red,
-      .icon-amber {
-        background: #fffdf8;
-        color: #2f241f;
-      }
+      .icon-blue  { background: #4f97de; color: #fff; }
+      .icon-green { background: #8dbf24; color: #fff; }
+      .icon-red   { background: #ef8d7d; color: #fff; }
+      .icon-amber { background: #f0bd1b; color: #fff; }
 
       h2 {
         display: inline-block;
-        position: relative;
-        font-size: 1.82rem;
+        position: static;
+        font-size: 1.92rem;
         line-height: 1.08;
         letter-spacing: -.03em;
         padding: 0;
-        border-radius: 0;
-        background: transparent;
         border: none;
+        background: transparent;
       }
-
-      
 
       .sub {
         font-size: .98rem;
-        padding-left: 0;
         color: #7b6d63;
+        padding-left: 0;
       }
 
       .panel,
@@ -831,30 +1112,137 @@
       .action,
       details,
       .media-frame,
-      .victory-goal-item {
-        border-width: 1px;
-      }
+      .victory-goal-item { border-width: 1px; }
 
       .panel::before,
-      .action::after {
-        display: none;
-      }
+      .action::after,
+      .phase-header::after { display: none; }
 
       .eyebrow {
         box-shadow: none;
-        color: #3a241a;
-        border: 1px solid rgba(60,34,25,.08);
+        color: #fff;
+        border: none;
+      }
+      .eyebrow.red { background: #ef8d7d; }
+      .eyebrow.blue { background: #4f97de; }
+      .eyebrow.green { background: #8dbf24; }
+      .eyebrow.yellow { background: #f0bd1b; color: #fff; }
+
+      /* ゲーム概要を理想案寄りに */
+      #overview .grid.two { gap: 14px; }
+      #overview .panel.soft:first-child {
+        padding: 18px 16px 16px;
+        background: #fffaf8;
+        border-color: #f0d9cf;
+      }
+      #overview .mini-title {
+        font-size: 1.48rem;
+        line-height: 1.35;
+        margin: 4px 0 14px;
+      }
+      #overview .victory-summary { gap: 14px; }
+      #overview .victory-goal {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      #overview .victory-goal-item {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: end;
+        align-content: start;
+        gap: 6px 10px;
+        padding: 18px 16px 16px;
+        min-height: 138px;
+      }
+      #overview .victory-goal-label {
+        grid-column: 1 / -1;
+        margin-bottom: 2px;
+        font-size: 1rem;
+        color: #5a5148;
+      }
+      #overview .victory-goal-value {
+        margin: 0;
+        font-size: 4rem;
+        line-height: .9;
+        letter-spacing: -.05em;
+      }
+      #overview .victory-goal-unit {
+        margin-bottom: 10px;
+        font-size: 1.22rem;
+        line-height: 1;
+      }
+      #overview .victory-highlight {
+        padding: 16px 18px;
+        text-align: center;
+        font-size: 1rem;
+        line-height: 1.45;
+        background: #fff3dc;
+        border: 1px solid #ecd8a7;
+        color: #4f3427;
+        font-weight: 900;
       }
 
-      .eyebrow.red { background: #f6b1a3; }
-      .eyebrow.blue { background: #a9d2fb; }
-      .eyebrow.green { background: #d4e997; }
-      .eyebrow.yellow { background: #f6dc7a; color: #5a3b07; }
-
-      .phase-list {
-        gap: 14px;
+      /* 準備するもの：スマホでは4項目を2列×2段で同格に見せる */
+      #prepare .grid.four {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      #prepare .grid.four .panel {
+        position: relative;
+        padding: 18px 12px 14px;
+        border-radius: 20px;
+        background: #fffdf9;
+        border: 1px solid #e7dacb;
+        min-height: 190px;
+      }
+      #prepare .grid.four .panel::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        top: 14px;
+        width: 58px;
+        height: 58px;
+        border-radius: 999px;
+        background: #eef6df;
+      }
+      #prepare .grid.four .panel:nth-child(2)::after { background: #fff0c9; }
+      #prepare .grid.four .panel:nth-child(3)::after { background: #dcecff; }
+      #prepare .grid.four .panel:nth-child(4)::after { background: #e9f6fb; }
+      #prepare .grid.four .panel .mini-title {
+        position: relative;
+        z-index: 1;
+        margin: 72px 0 10px;
+        font-size: 1rem;
+        line-height: 1.28;
+      }
+      #prepare .grid.four .panel p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-size: .80rem;
+        line-height: 1.55;
+        color: #5e5147;
+      }
+      #prepare .grid.four .panel:nth-child(4) {
+        grid-column: auto;
+        min-height: 190px;
+      }
+      #prepare .grid.four .panel:nth-child(4) .mini-title {
+        margin-top: 72px;
+        font-size: 1rem;
+      }
+      #prepare .grid.four .panel:nth-child(4)::after {
+        width: 58px;
+        height: 58px;
+        top: 14px;
+        left: 12px;
       }
 
+#overview .grid {
+  gap: 18px;
+}
+
+      .phase-list { gap: 16px; }
       .phase {
         overflow: visible;
         background: transparent;
@@ -862,24 +1250,17 @@
         box-shadow: none;
         border-radius: 0;
       }
-
       .phase-header {
-        color: #3a241a;
+        color: #2f241f;
         border-radius: 16px 16px 0 0;
-        border: 1px solid #eadfd2;
-        border-bottom: none;
-        padding: 15px 16px 13px;
-        font-size: 1.08rem;
+        border: none;
+        padding: 16px 16px 14px;
+        font-size: 1.14rem;
+        font-weight: 1000;
       }
-
-      .phase-header::after {
-        display: none;
-      }
-
       .phase-start .phase-header { background: #d9eca2; }
       .phase-main .phase-header { background: #ffc3b5; }
       .phase-end .phase-header { background: #bddcff; }
-
       .phase-body {
         padding: 4px 0 0;
         background: transparent;
@@ -888,9 +1269,7 @@
       }
 
       .turn-steps,
-      .setup-steps {
-        gap: 0;
-      }
+      .setup-steps { gap: 0; }
 
       .step {
         padding: 16px 0;
@@ -902,29 +1281,22 @@
         background: transparent;
         box-shadow: none;
       }
-
-      .step + .step {
-        border-top: 1px solid #e9dfd2;
-      }
-
+      .step + .step { border-top: 1px solid #e9dfd2; }
       .step-num {
         width: 38px;
         height: 38px;
         border-radius: 999px;
         border: 2px solid #f2d36b;
-        outline: none;
         background: #fffdf7;
         color: #5a411c;
         box-shadow: none;
         font-size: .96rem;
         font-weight: 900;
-        line-height: 1;
         display: grid;
         place-items: center;
         margin-left: 10px;
         flex: 0 0 auto;
       }
-
       .step > div:last-child {
         padding-right: 12px;
         font-size: 1.04rem;
@@ -932,7 +1304,6 @@
         font-weight: 600;
         color: #3f2a20;
       }
-
       .step > div:last-child strong {
         font-weight: 900;
         color: #2f1d16;
@@ -940,11 +1311,10 @@
 
       .choice-banner {
         padding: 14px;
-        border-width: 2px;
-        background: #fff4d8;
+        border-width: 1px;
+        background: #fff5db;
         color: #5a4839;
       }
-
       .choice-title { font-size: 1rem; color: #68420c; }
       .choice-sub { font-size: .95rem; color: #6a5848; }
 
@@ -953,19 +1323,16 @@
         padding: 16px 14px 14px;
         border-left-width: 6px;
       }
-
       .action-label {
         min-width: 92px;
         font-size: .74rem;
         padding: 5px 9px;
         margin-bottom: 10px;
       }
-
       .action strong {
         font-size: 1.12rem;
         margin-bottom: 6px;
       }
-
       .action p {
         font-size: .84rem;
         line-height: 1.35;
@@ -975,26 +1342,9 @@
         background: #eef6e2;
         border-left-color: #8ab63b;
       }
-
       .victory-skill {
         background: #e8f2fb;
         border-left-color: #4f97de;
-      }
-
-      .victory-goal-label,
-      .victory-goal-unit,
-      .victory-goal-value {
-        color: #3a241a;
-      }
-
-      .victory-goal-value { font-size: 2.6rem; }
-
-      .victory-highlight {
-        font-size: .98rem;
-        line-height: 1.5;
-        background: #fff1cf;
-        border-color: #ecd8a7;
-        color: #5a4632;
       }
 
       .notice {
@@ -1010,7 +1360,550 @@
         margin: 0 auto;
       }
     }
+
+    @media (max-width: 960px) {
+      .rule-strip {
+        width: 100%;
+        height: 48px;
+        min-height: 48px;
+        margin: 0 0 16px;
+        padding: 0 16px 0 10px;
+        border-radius: 999px;
+        font-size: .92rem;
+        line-height: 1;
+      }
+
+      #prepare .panel.soft .rule-strip {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .rule-strip-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .rule-strip-icon svg {
+        width: 17px;
+        height: 17px;
+      }
+    }
+
   </style>
+
+
+  <style id="mobile-victory-fix-20260424">
+  @media (max-width: 700px) {
+    #overview .victory-summary {
+      gap: 18px !important;
+    }
+
+    #overview .victory-headline {
+      font-size: 1.28rem !important;
+      line-height: 1.36 !important;
+      letter-spacing: -.03em !important;
+    }
+
+    #overview .victory-goal {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+    }
+
+    #overview .victory-goal-item {
+      display: grid !important;
+      grid-template-columns: 58px minmax(0, 1fr) !important;
+      column-gap: 10px !important;
+      row-gap: 6px !important;
+      align-items: center !important;
+      align-content: center !important;
+      min-height: 112px !important;
+      padding: 14px 12px !important;
+      border-radius: 20px !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+
+    #overview .victory-goal-icon-wrap {
+      grid-column: 1 !important;
+      grid-row: 1 / span 2 !important;
+      width: 54px !important;
+      height: 54px !important;
+      margin: 0 !important;
+      justify-self: center !important;
+      align-self: center !important;
+      flex: none !important;
+    }
+
+    #overview .victory-goal-icon-wrap svg {
+      width: 26px !important;
+      height: 26px !important;
+    }
+
+    #overview .victory-goal-copy {
+      grid-column: 2 !important;
+      display: grid !important;
+      grid-template-rows: auto auto !important;
+      gap: 4px !important;
+      align-content: center !important;
+      justify-items: start !important;
+      min-width: 0 !important;
+      width: 100% !important;
+    }
+
+    #overview .victory-goal-label {
+      margin: 0 !important;
+      font-size: .78rem !important;
+      line-height: 1.1 !important;
+      white-space: nowrap !important;
+      letter-spacing: 0 !important;
+    }
+
+    #overview .victory-goal-row {
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-start !important;
+      gap: 4px !important;
+      min-width: 0 !important;
+      flex-wrap: nowrap !important;
+    }
+
+    #overview .victory-goal-value {
+      margin: 0 !important;
+      font-size: 3.1rem !important;
+      line-height: .84 !important;
+      letter-spacing: -.07em !important;
+      flex: 0 0 auto !important;
+    }
+
+    #overview .victory-goal-unit {
+      margin: 0 0 4px !important;
+      font-size: .95rem !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      flex: 0 0 auto !important;
+    }
+
+    #overview .victory-result {
+      gap: 10px !important;
+      padding: 2px 0 0 !important;
+    }
+
+    #overview .victory-result-burst {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    #overview .victory-result-burst::before,
+    #overview .victory-result-burst::after {
+      width: 10px !important;
+      height: 3px !important;
+    }
+
+    #overview .victory-flag {
+      width: 24px !important;
+      height: 24px !important;
+    }
+
+    #overview .victory-flag svg {
+      width: 20px !important;
+      height: 20px !important;
+    }
+
+    #overview .victory-result-text {
+      font-size: .95rem !important;
+      line-height: 1.4 !important;
+    }
+  }
+  </style>
+
+
+<style id="rule-strip-exact-victory-chip-fix-20260428">
+  /* 勝利条件チップと上下の厚みを完全に合わせる最終調整 */
+  .rule-strip {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 10px !important;
+    min-height: 54px !important;
+    height: auto !important;
+    padding: 0 18px 0 12px !important;
+    border-radius: 999px !important;
+    color: #fff !important;
+    font-size: .96rem !important;
+    font-weight: 900 !important;
+    letter-spacing: .02em !important;
+    line-height: 1.75 !important;
+    box-shadow: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .rule-strip-icon {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,.18) !important;
+    display: grid !important;
+    place-items: center !important;
+    flex: 0 0 auto !important;
+  }
+
+  .rule-strip-icon svg {
+    width: 19px !important;
+    height: 19px !important;
+    display: block !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
+    stroke-width: 0 !important;
+  }
+
+  .rule-strip-text {
+    display: inline !important;
+    line-height: inherit !important;
+  }
+
+  @media (max-width: 640px) {
+    .rule-strip {
+      min-height: 48px !important;
+      height: auto !important;
+      padding: 0 16px 0 10px !important;
+      font-size: .92rem !important;
+      line-height: 1.75 !important;
+    }
+
+    .rule-strip-icon {
+      width: 30px !important;
+      height: 30px !important;
+    }
+
+    .rule-strip-icon svg {
+      width: 17px !important;
+      height: 17px !important;
+    }
+  }
+</style>
+
+
+<style id="mobile-chip-ratio-lock-20260428">
+  /*
+    スマホ版の見出しチップを統一。
+    勝利条件・デッキ構築・対戦準備で、
+    高さ / アイコン / 文字位置の比率が変わらないようにする。
+  */
+  @media (max-width: 700px) {
+    #overview .panel.soft,
+    #prepare .panel.soft {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    #overview .victory-chip,
+    #overview .rule-strip,
+    #prepare .rule-strip {
+      --chip-h: 48px;
+      --chip-icon: 30px;
+      --chip-gap: 10px;
+      --chip-pad-x: 10px;
+      width: 100% !important;
+      min-height: var(--chip-h) !important;
+      height: var(--chip-h) !important;
+      padding: 0 var(--chip-pad-x) !important;
+      display: grid !important;
+      grid-template-columns: var(--chip-icon) minmax(0, 1fr) !important;
+      align-items: center !important;
+      column-gap: var(--chip-gap) !important;
+      border-radius: 999px !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+      line-height: 1 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    #overview .victory-chip-icon,
+    #overview .rule-strip-icon,
+    #prepare .rule-strip-icon {
+      width: var(--chip-icon) !important;
+      height: var(--chip-icon) !important;
+      min-width: var(--chip-icon) !important;
+      min-height: var(--chip-icon) !important;
+      display: grid !important;
+      place-items: center !important;
+      justify-self: center !important;
+      align-self: center !important;
+      margin: 0 !important;
+      border-radius: 999px !important;
+      box-sizing: border-box !important;
+      flex: none !important;
+    }
+
+    #overview .victory-chip-icon svg,
+    #overview .rule-strip-icon svg,
+    #prepare .rule-strip-icon svg {
+      width: 17px !important;
+      height: 17px !important;
+      display: block !important;
+      margin: 0 !important;
+    }
+
+    #overview .victory-chip > span:last-child,
+    #overview .rule-strip-text,
+    #prepare .rule-strip-text {
+      display: block !important;
+      align-self: center !important;
+      justify-self: start !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      font-size: .92rem !important;
+      line-height: 1 !important;
+      font-weight: 900 !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    #overview .victory-chip,
+    #overview .rule-strip,
+    #prepare .rule-strip {
+      --chip-h: 46px;
+      --chip-icon: 29px;
+      --chip-gap: 9px;
+      --chip-pad-x: 9px;
+    }
+
+    #overview .victory-chip > span:last-child,
+    #overview .rule-strip-text,
+    #prepare .rule-strip-text {
+      font-size: .88rem !important;
+    }
+  }
+</style>
+
+
+
+<style id="mobile-victory-goal-vertical-final-20260428">
+  /* スマホでは勝利条件の「学科教習」「技能教習」を縦並びにする */
+  @media (max-width: 700px) {
+    #overview .victory-goal {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+
+    #overview .victory-goal-item {
+      display: grid !important;
+      grid-template-columns: 64px minmax(0, 1fr) !important;
+      column-gap: 14px !important;
+      row-gap: 0 !important;
+      align-items: center !important;
+      align-content: center !important;
+      width: 100% !important;
+      min-height: 112px !important;
+      padding: 18px 20px !important;
+      border-radius: 22px !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+
+    #overview .victory-goal-icon-wrap {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      width: 64px !important;
+      height: 64px !important;
+      margin: 0 !important;
+      justify-self: center !important;
+      align-self: center !important;
+      flex: none !important;
+    }
+
+    #overview .victory-goal-icon-wrap svg {
+      width: 30px !important;
+      height: 30px !important;
+    }
+
+    #overview .victory-goal-copy {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      display: grid !important;
+      gap: 6px !important;
+      align-content: center !important;
+      justify-items: start !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    #overview .victory-goal-label {
+      margin: 0 !important;
+      font-size: 1rem !important;
+      line-height: 1.1 !important;
+      white-space: nowrap !important;
+      color: #5a5148 !important;
+    }
+
+    #overview .victory-goal-row {
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-start !important;
+      gap: 6px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      flex-wrap: nowrap !important;
+    }
+
+    #overview .victory-goal-value {
+      margin: 0 !important;
+      font-size: clamp(4rem, 18vw, 5.1rem) !important;
+      line-height: .82 !important;
+      letter-spacing: -.07em !important;
+      flex: 0 0 auto !important;
+    }
+
+    #overview .victory-goal-unit {
+      margin: 0 0 7px !important;
+      font-size: 1.15rem !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      flex: 0 0 auto !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    #overview .victory-goal-item {
+      grid-template-columns: 56px minmax(0, 1fr) !important;
+      column-gap: 12px !important;
+      min-height: 104px !important;
+      padding: 16px 16px !important;
+    }
+
+    #overview .victory-goal-icon-wrap {
+      width: 56px !important;
+      height: 56px !important;
+    }
+
+    #overview .victory-goal-icon-wrap svg {
+      width: 27px !important;
+      height: 27px !important;
+    }
+
+    #overview .victory-goal-label {
+      font-size: .92rem !important;
+    }
+
+    #overview .victory-goal-value {
+      font-size: clamp(3.6rem, 17vw, 4.7rem) !important;
+    }
+
+    #overview .victory-goal-unit {
+      margin-bottom: 6px !important;
+      font-size: 1.05rem !important;
+    }
+  }
+</style>
+
+
+
+<style id="mobile-victory-goal-centered-balance-20260428">
+  /* スマホ版だけ：勝利条件の中身を「左寄せ固定」ではなく、アイコン＋文字の塊として中央に置く */
+  @media (max-width: 700px) {
+    #overview .victory-goal-item {
+      display: grid !important;
+      grid-template-columns: auto auto !important;
+      justify-content: center !important;
+      align-items: center !important;
+      column-gap: clamp(18px, 5vw, 28px) !important;
+      min-height: 116px !important;
+      padding: 18px 20px !important;
+      box-sizing: border-box !important;
+    }
+
+    #overview .victory-goal-icon-wrap {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      width: 64px !important;
+      height: 64px !important;
+      justify-self: center !important;
+      align-self: center !important;
+      margin: 0 !important;
+    }
+
+    #overview .victory-goal-copy {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      display: grid !important;
+      justify-items: start !important;
+      align-content: center !important;
+      gap: 6px !important;
+      width: auto !important;
+      min-width: 0 !important;
+    }
+
+    #overview .victory-goal-label {
+      margin: 0 !important;
+      text-align: left !important;
+      font-size: 1rem !important;
+      line-height: 1.1 !important;
+      white-space: nowrap !important;
+    }
+
+    #overview .victory-goal-row {
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-start !important;
+      gap: 6px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      flex-wrap: nowrap !important;
+    }
+
+    #overview .victory-goal-value {
+      margin: 0 !important;
+      font-size: clamp(4rem, 18vw, 5.1rem) !important;
+      line-height: .82 !important;
+      letter-spacing: -.07em !important;
+    }
+
+    #overview .victory-goal-unit {
+      margin: 0 0 7px !important;
+      font-size: 1.15rem !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+    }
+  }
+
+  @media (max-width: 390px) {
+    #overview .victory-goal-item {
+      column-gap: 16px !important;
+      min-height: 108px !important;
+      padding: 16px 14px !important;
+    }
+
+    #overview .victory-goal-icon-wrap {
+      width: 58px !important;
+      height: 58px !important;
+    }
+
+    #overview .victory-goal-icon-wrap svg {
+      width: 27px !important;
+      height: 27px !important;
+    }
+
+    #overview .victory-goal-label {
+      font-size: .92rem !important;
+    }
+
+    #overview .victory-goal-value {
+      font-size: clamp(3.6rem, 17vw, 4.7rem) !important;
+    }
+
+    #overview .victory-goal-unit {
+      margin-bottom: 6px !important;
+      font-size: 1.05rem !important;
+    }
+  }
+</style>
+
 </head>
 <body>
   <main class="wrap stack">
@@ -1031,30 +1924,80 @@
           <p class="sub">最初に見る場所です。勝ち方とデッキの作り方をここで確認できます。</p>
         </div>
       </div>
-      <div class="grid two">
+      <div class="grid">
         <article class="panel soft">
-          <div class="eyebrow red">勝利条件</div>
-          <h3 class="mini-title">先に卒業条件をそろえたプレイヤーの勝ち</h3>
-          <div class="victory-summary">
-            <div class="victory-goal">
-              <div class="victory-goal-item victory-study">
-                <div class="victory-goal-label">学科教習</div>
-                <div class="victory-goal-value">10</div>
-                <div class="victory-goal-unit">時限</div>
-              </div>
-              <div class="victory-goal-item victory-skill">
-                <div class="victory-goal-label">技能教習</div>
-                <div class="victory-goal-value">19</div>
-                <div class="victory-goal-unit">時限</div>
-              </div>
-            </div>
-            <div class="victory-highlight">
-              <strong>学科教習10時限</strong> と <strong>技能教習19時限</strong> を先に達成したプレイヤーが勝ちです。
-            </div>
+  <div class="victory-summary">
+    <div class="victory-chip">
+      <span class="victory-chip-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+          <path d="M18 2H6v3H3v2c0 2.76 2.24 5 5 5h.09A5.98 5.98 0 0 0 11 13.92V17H8v2h8v-2h-3v-3.08A5.98 5.98 0 0 0 15.91 12H16c2.76 0 5-2.24 5-5V5h-3V2Zm-2 2v4a4 4 0 1 1-8 0V4h8ZM5 7V7V7h1v2c0 .34.03.67.09.99A3.01 3.01 0 0 1 5 7Zm14 0a3.01 3.01 0 0 1-1.09 2.99c.06-.32.09-.65.09-.99V7h1Z"/>
+        </svg>
+      </span>
+      <span>勝利条件</span>
+    </div>
+
+    <h3 class="victory-headline">両方を先に達成したプレイヤーの勝ち</h3>
+
+    <div class="victory-goal">
+      <div class="victory-goal-item victory-study">
+        <div class="victory-goal-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+            <path d="M3 5.5C3 4.67 3.67 4 4.5 4H10c1.1 0 2.1.36 2.9.97C13.9 4.36 14.9 4 16 4h4.5c.83 0 1.5.67 1.5 1.5V18c0 .55-.45 1-1 1h-5c-1.05 0-2.03.31-2.85.84a1 1 0 0 1-1.1 0A5.03 5.03 0 0 0 9 19H4c-.55 0-1-.45-1-1V5.5Z"/>
+          </svg>
+        </div>
+        <div class="victory-goal-copy">
+          <div class="victory-goal-label">学科教習</div>
+          <div class="victory-goal-row">
+            <div class="victory-goal-value">10</div>
+            <div class="victory-goal-unit">時限</div>
           </div>
-        </article>
+        </div>
+      </div>
+
+      <div class="victory-goal-item victory-skill">
+        <div class="victory-goal-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+            <circle cx="12" cy="12" r="7.5"></circle>
+            <circle cx="12" cy="12" r="1.6"></circle>
+            <path d="M12 12 18.4 9.6"></path>
+            <path d="M12 12 7.3 6.4"></path>
+            <path d="M12 12 10.3 19"></path>
+          </svg>
+        </div>
+        <div class="victory-goal-copy">
+          <div class="victory-goal-label">技能教習</div>
+          <div class="victory-goal-row">
+            <div class="victory-goal-value">19</div>
+            <div class="victory-goal-unit">時限</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="victory-result">
+      <span class="victory-result-burst" aria-hidden="true"></span>
+
+      <span class="victory-flag" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+          <path d="M6 3.5a1 1 0 0 1 2 0V5h7.5c1.05 0 1.58 1.27.84 2.02L14.7 8.7c-.39.39-.39 1.02 0 1.41l1.64 1.64c.74.74.21 2.01-.84 2.01H8V20.5a1 1 0 1 1-2 0v-17Z"/>
+        </svg>
+      </span>
+
+      <div class="victory-result-text">両方を先に達成したプレイヤーの勝ち</div>
+
+      <span class="victory-result-burst" aria-hidden="true"></span>
+    </div>
+  </div>
+</article>
         <article class="panel soft">
-          <div class="eyebrow blue">デッキ構築</div>
+          <div class="rule-strip rule-strip-blue">
+            <span class="rule-strip-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                <path d="M4 4.5C4 3.67 4.67 3 5.5 3h10A2.5 2.5 0 0 1 18 5.5V18a3 3 0 0 1-3 3H5.5A1.5 1.5 0 0 1 4 19.5v-15Zm2 0V17h9a3 3 0 0 1 1 .17V5.5a.5.5 0 0 0-.5-.5H6Zm0 14.5v.5h9a1 1 0 1 0 0-2H6v1.5Z"/>
+              </svg>
+            </span>
+            <span class="rule-strip-text">デッキ構築</span>
+          </div>
           <h3 class="mini-title">対戦前にここだけ確認</h3>
           <ul class="list">
             <li>デッキは <strong>20枚以上</strong> のカードから遊べます。</li>
@@ -1084,7 +2027,14 @@
       <div style="height:16px"></div>
 
       <div class="panel soft">
-        <div class="eyebrow green">対戦準備</div>
+        <div class="rule-strip rule-strip-green">
+          <span class="rule-strip-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+              <path d="M9 2.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V4h3.5A1.5 1.5 0 0 1 20 5.5v14a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5v-14A1.5 1.5 0 0 1 5.5 4H9V2.5ZM11 4h2v-.5h-2V4Zm-4 5.5a1 1 0 0 0 0 2h10a1 1 0 1 0 0-2H7Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H7Z"/>
+            </svg>
+          </span>
+          <span class="rule-strip-text">対戦準備</span>
+        </div>
         <div class="setup-steps">
           <div class="step">
             <div class="step-num">1</div>
